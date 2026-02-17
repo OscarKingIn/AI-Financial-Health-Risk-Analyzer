@@ -2,7 +2,7 @@
 
 AI Financial Health & Risk Analyzer is a production-ready SaaS application designed to analyze bank transaction data using AI, calculate risk scores, and generate professional financial reports.
 
-## 🚀 Features
+## Features
 
 - **AI Categorization**: OpenAI-powered transaction classifier.
 - **Fintech Risk Engine**: Proprietary logic for financial health scoring (0-100).
@@ -10,7 +10,7 @@ AI Financial Health & Risk Analyzer is a production-ready SaaS application desig
 - **Professional Reports**: Detailed PDF exports with category breakdowns and AI recommendations.
 - **Modern UI**: Clean, responsive dashboard with Dark/Light mode support.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend**: Flask (Python 3.11+)
 - **Database**: SQLite (SQLAlchemy)
@@ -19,7 +19,7 @@ AI Financial Health & Risk Analyzer is a production-ready SaaS application desig
 - **PDF**: ReportLab
 - **Frontend**: Tailwind CSS
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 1. **Clone the repository**:
    ```bash
@@ -43,16 +43,16 @@ AI Financial Health & Risk Analyzer is a production-ready SaaS application desig
    python app.py
    ```
 
-## 📄 Deployment
+## Deployment
 
 This application is ready for deployment on **Render** or **Railway**. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
-## 🛡️ Security
+## Security
 
 - **Environment Variables**: All secrets (OpenAI, Stripe) are managed via `.env`.
 - **Data Privacy**: Transactions are processed and discarded after report generation (if configured).
 
-## 📊 Sample Data
+## Sample Data
 
 A `sample_transactions.csv` is included in the root directory for testing the upload and analysis flow.
 
