@@ -1,0 +1,9 @@
+flask
+flask-sqlalchemy
+openai
+stripe
+reportlab
+pandas
+python-dotenv
+gunicorn
+flask-migrate

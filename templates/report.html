@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-12 px-4">
+    <div id="loading" class="text-center py-20">
+        <div class="w-16 h-16 border-4 border-brand-600 border-t-transparent rounded-full animate-spin mx-auto mb-6">
+        </div>
+        <h2 class="text-2xl font-bold mb-2">Generating Secure Report</h2>
+        <p class="text-slate-500">Connecting to global financial health database...</p>
+    </div>
+
+    <div id="report-content" class="hidden animate-in fade-in duration-700">
+        <!-- Header -->
+        <div
+            class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 p-8 glass rounded-3xl border-brand-100 dark:border-slate-800">
+            <div>
+                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Financial Insights Dashboard</h1>
+                <p class="text-slate-500 font-medium">Report Artifact #<span id="report-id-text"></span> • Verified
+                    securely</p>
+            </div>
+            <div id="download-section" class="hidden">
+                <button id="download-btn"
+                    class="px-8 py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition shadow-xl shadow-emerald-500/20 flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Download Premium PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <!-- Score Gauge -->
+            <div
+                class="glass p-10 rounded-[32px] text-center border-brand-200 dark:border-slate-800 relative group overflow-hidden">
+                <div
+                    class="absolute -top-10 -left-10 w-32 h-32 bg-brand-500/5 rounded-full blur-2xl group-hover:bg-brand-500/10 transition">
+                </div>
+
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8">Financial Health Score</h3>
+
+                <div class="relative w-48 h-48 mx-auto flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="12" fill="transparent"
+                            class="text-gray-100 dark:text-slate-800" />
+                        <circle id="score-circle" cx="96" cy="96" r="88" stroke="currentColor" stroke-width="12"
+                            fill="transparent" stroke-dasharray="552.9" stroke-dashoffset="552.9"
+                            class="text-brand-600 transition-all duration-1500 ease-out" />
+                    </svg>
+                    <div class="absolute text-center">
+                        <span id="score-text" class="text-6xl font-black">0</span>
+                        <span class="block text-xs font-bold text-slate-400 mt-1">/ 100</span>
+                    </div>
+                </div>
+
+                <p id="health-label" class="mt-8 font-bold text-xl"></p>
+                <p id="risk-analysis-text" class="mt-4 text-sm text-slate-500 leading-relaxed"></p>
+            </div>
+
+            <!-- Spending Summary -->
+            <div class="lg:col-span-2 glass p-10 rounded-[32px] border-slate-200 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-10">
+                    <h3 class="text-xl font-bold">Flow Analysis</h3>
+                    <span
+                        class="text-xs font-mono bg-blue-50 dark:bg-blue-900/40 text-blue-600 px-3 py-1 rounded-full uppercase">Real-time
+                        Data</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </div>
+                            <span class="text-slate-500 font-medium">Monthly Inflow</span>
+                        </div>
+                        <p id="total-income" class="text-4xl font-extrabold text-slate-900 dark:text-white">$0.00</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="w-10 h-10 bg-rose-100 dark:bg-rose-900/40 text-rose-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span class="text-slate-500 font-medium">Monthly Outflow</span>
+                        </div>
+                        <p id="total-expenses" class="text-4xl font-extrabold text-slate-900 dark:text-white">$0.00</p>
+                    </div>
+                </div>
+
+                <div
+                    class="mt-12 p-6 bg-brand-50 dark:bg-slate-800/80 rounded-2xl border border-brand-100 dark:border-slate-700 flex flex-wrap gap-8">
+                    <div>
+                        <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest block mb-1">Savings
+                            Rate</span>
+                        <span id="savings-rate-text" class="text-xl font-bold">0%</span>
+                    </div>
+                    <div>
+                        <span
+                            class="text-[10px] font-black text-brand-600 uppercase tracking-widest block mb-1">Essential
+                            Ratio</span>
+                        <span id="essential-ratio-text" class="text-xl font-bold">0%</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest block mb-1">DTI
+                            Ratio</span>
+                        <span id="dti-ratio-text" class="text-xl font-bold">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lock Layer / Detailed Analysis -->
+        <div id="lock-overlay" class="relative group">
+            <div
+                class="absolute inset-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[40px] z-20 flex items-center justify-center p-8 text-center border border-white/20">
+                <div class="max-w-md animate-in slide-in-from-bottom duration-1000">
+                    <div
+                        class="w-20 h-20 bg-brand-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-brand-500/50">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h2 class="text-4xl font-black mb-6">Unlock Full Financial Intelligence</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-10 text-lg">Get access to your detailed category
+                        breakdown, bank-ready PDF report, and AI-driven recommendations to optimize your wealth.</p>
+                    <button id="pay-btn"
+                        class="w-full px-12 py-5 bg-slate-900 dark:bg-brand-600 text-white font-bold rounded-2xl hover:scale-105 transition shadow-2xl text-xl flex items-center justify-center gap-4">
+                        Unlock for $19.00
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </button>
+                    <p class="mt-6 text-xs text-slate-400">Secure Stripe Payment • Encrypted Data Transmission</p>
+                </div>
+            </div>
+
+            <!-- Blurred Placeholder Content -->
+            <div class="filter blur-xl opacity-30 select-none pointer-events-none space-y-8">
+                <div class="h-64 glass rounded-[40px]"></div>
+                <div class="h-64 glass rounded-[40px]"></div>
+            </div>
+        </div>
+
+        <!-- Unlocked Detailed Content -->
+        <div id="unlocked-content" class="hidden space-y-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass p-10 rounded-[40px]">
+                    <h3 class="text-2xl font-bold mb-8">Structural Breakdown</h3>
+                    <div id="category-list" class="space-y-4">
+                        <!-- Dynamic categories -->
+                    </div>
+                </div>
+                <div class="glass p-10 rounded-[40px]">
+                    <h3 class="text-2xl font-bold mb-8">AI Intelligence Core</h3>
+                    <div class="space-y-6">
+                        <div
+                            class="p-6 bg-brand-50 dark:bg-brand-900/20 rounded-3xl border border-brand-100 dark:border-brand-800">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="flex h-3 w-3 rounded-full bg-brand-600"></span>
+                                <span class="font-bold text-sm tracking-widest uppercase">Financial
+                                    Recommendation</span>
+                            </div>
+                            <p id="ai-rec-text" class="text-slate-600 dark:text-slate-300 leading-relaxed italic"></p>
+                        </div>
+                        <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-3xl">
+                            <h4 class="font-bold mb-2">Next Steps</h4>
+                            <ul class="text-sm space-y-2 text-slate-500">
+                                <li>• Download your verified PDF report</li>
+                                <li>• Share with your financial advisor</li>
+                                <li>• Check back next month to see progress</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const reportId = window.location.pathname.split('/').pop();
+
+    async function init() {
+        try {
+            const res = await fetch(`/report/${reportId}${window.location.search}`);
+            const data = await res.json();
+
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('report-content').classList.remove('hidden');
+
+            document.getElementById('report-id-text').innerText = data.id;
+            document.getElementById('score-text').innerText = data.score;
+            document.getElementById('total-income').innerText = `$${data.summary.total_income.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            document.getElementById('total-expenses').innerText = `$${data.summary.total_expenses.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+
+            // Metrics
+            document.getElementById('savings-rate-text').innerText = `${(data.summary.metrics.savings_rate * 100).toFixed(0)}%`;
+            document.getElementById('essential-ratio-text').innerText = `${(data.summary.metrics.essential_ratio * 100).toFixed(0)}%`;
+            document.getElementById('dti-ratio-text').innerText = `${(data.summary.metrics.dti_ratio * 100).toFixed(0)}%`;
+
+            // Circle animation
+            const circle = document.getElementById('score-circle');
+            const offset = 552.9 - (552.9 * data.score / 100);
+            setTimeout(() => circle.style.strokeDashoffset = offset, 300);
+
+            // Health Label
+            const label = document.getElementById('health-label');
+            label.innerText = data.risk_level || 'Moderate';
+            const analysis = document.getElementById('risk-analysis-text');
+            analysis.innerText = data.summary.risk_analysis || "";
+
+            if (data.score > 80) { label.className = 'mt-8 font-black text-2xl text-emerald-600'; }
+            else if (data.score > 60) { label.className = 'mt-8 font-black text-2xl text-blue-600'; }
+            else if (data.score > 40) { label.className = 'mt-8 font-black text-2xl text-yellow-600'; }
+            else { label.className = 'mt-8 font-black text-2xl text-rose-600'; }
+
+            if (data.is_paid) {
+                document.getElementById('lock-overlay').classList.add('hidden');
+                document.getElementById('unlocked-content').classList.remove('hidden');
+                document.getElementById('download-section').classList.remove('hidden');
+
+                // Populate categories
+                const catList = document.getElementById('category-list');
+                Object.entries(data.summary.category_breakdown).forEach(([cat, amt]) => {
+                    const pct = (amt / data.summary.total_expenses * 100).toFixed(0);
+                    const row = document.createElement('div');
+                    row.className = 'space-y-2';
+                    row.innerHTML = `
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="font-bold">${cat}</span>
+                            <span class="font-medium text-slate-500">$${amt.toLocaleString()} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-1.5">
+                            <div class="bg-brand-600 h-1.5 rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    `;
+                    catList.appendChild(row);
+                });
+
+                // AI Rec
+                document.getElementById('ai-rec-text').innerText = `Based on your ${data.risk_level} risk score, our AI suggests prioritizing ${data.summary.total_income > data.summary.total_expenses ? 'Wealth Building' : 'Debt Consolidation'} by reducing high-interest liabilities.`;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    document.getElementById('pay-btn').onclick = async () => {
+        const btn = document.getElementById('pay-btn');
+        btn.disabled = true;
+        btn.innerHTML = 'Secure Loading...';
+        const res = await fetch(`/create-checkout-session/${reportId}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.checkout_url) window.location.href = data.checkout_url;
+    };
+
+    document.getElementById('download-btn').onclick = () => {
+        window.location.href = `/report/${reportId}/download`;
+    };
+
+    init();
+</script>
+{% endblock %}

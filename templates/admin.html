@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="glass p-6 rounded-2xl">
+            <p class="text-gray-400 text-sm uppercase mb-1">Total Reports</p>
+            <p id="stat-reports" class="text-2xl font-bold">0</p>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+            <p class="text-gray-400 text-sm uppercase mb-1">Paid Reports</p>
+            <p id="stat-paid" class="text-2xl font-bold text-green-600">0</p>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+            <p class="text-gray-400 text-sm uppercase mb-1">Total Users</p>
+            <p id="stat-users" class="text-2xl font-bold">0</p>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+            <p class="text-gray-400 text-sm uppercase mb-1">Gross Revenue</p>
+            <p id="stat-revenue" class="text-2xl font-bold text-blue-600">$0.00</p>
+        </div>
+    </div>
+
+    <div class="glass rounded-3xl overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="px-6 py-4 text-sm font-bold text-gray-500">ID</th>
+                    <th class="px-6 py-4 text-sm font-bold text-gray-500">User</th>
+                    <th class="px-6 py-4 text-sm font-bold text-gray-500">Score</th>
+                    <th class="px-6 py-4 text-sm font-bold text-gray-500">Status</th>
+                    <th class="px-6 py-4 text-sm font-bold text-gray-500">Date</th>
+                </tr>
+            </thead>
+            <tbody id="report-table-body">
+                <!-- Data will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadStats() {
+        const res = await fetch('/admin/stats');
+        const data = await res.json();
+        document.getElementById('stat-reports').innerText = data.total_reports;
+        document.getElementById('stat-paid').innerText = data.paid_reports;
+        document.getElementById('stat-users').innerText = data.total_users;
+        document.getElementById('stat-revenue').innerText = `$${data.total_revenue.toFixed(2)}`;
+    }
+
+    async function loadReports() {
+        const res = await fetch('/admin/reports');
+        const data = await res.json();
+        const body = document.getElementById('report-table-body');
+
+        data.forEach(r => {
+            const row = document.createElement('tr');
+            row.className = 'border-b hover:bg-white/50 transition';
+            row.innerHTML = `
+                <td class="px-6 py-4 font-medium">#${r.id}</td>
+                <td class="px-6 py-4">${r.user}</td>
+                <td class="px-6 py-4">
+                    <span class="px-2 py-1 rounded bg-blue-100 text-blue-700 font-bold">${r.score}</span>
+                </td>
+                <td class="px-6 py-4">
+                    ${r.is_paid ? '<span class="text-green-600 font-bold">Paid</span>' : '<span class="text-gray-400">Unpaid</span>'}
+                </td>
+                <td class="px-6 py-4 text-gray-500">${new Date(r.created_at).toLocaleDateString()}</td>
+            `;
+            body.appendChild(row);
+        });
+    }
+
+    loadStats();
+    loadReports();
+</script>
+{% endblock %}
