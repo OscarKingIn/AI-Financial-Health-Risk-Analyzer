@@ -1,6 +1,6 @@
-# FlowTrack AI | Financial Health & Risk Analyzer
+# AI Financial Health & Risk Analyzer
 
-FlowTrack AI is a production-ready SaaS application designed to analyze bank transaction data using AI, calculate risk scores, and generate professional financial reports.
+AI Financial Health & Risk Analyzer is a production-ready SaaS application designed to analyze bank transaction data using AI, calculate risk scores, and generate professional financial reports.
 
 ## 🚀 Features
 
