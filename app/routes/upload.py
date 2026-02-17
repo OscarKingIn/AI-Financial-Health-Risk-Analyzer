@@ -61,8 +61,7 @@ def upload_csv():
                     date=pd.to_datetime(tx['date']).date(),
                     description=tx['description'],
                     amount=amount,
-                    category=tx['category'],
-                    is_income=is_income
+                    category=tx['category']
                 )
                 db_txs.append(new_tx)
                 db.session.add(new_tx)

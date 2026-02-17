@@ -15,7 +15,8 @@ def categorize_transactions(transactions_list):
     transactions_list: list of dicts with 'description' and 'amount'
     Returns: list of categorized transactions
     """
-    if not os.getenv("OPENAI_API_KEY"):
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key or "your_openai_api_key" in api_key:
         # Fallback for development without API key
         return [{"category": "Misc", **tx} for tx in transactions_list]
 

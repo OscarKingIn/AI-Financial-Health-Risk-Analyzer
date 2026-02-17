@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, request, jsonify, redirect, url_for
 from models import db, Report, Payment
-from app.services.stripe_service import create_checkout_session, verify_payment
+from app.services.stripe_service import create_checkout_session, verify_payment_session
 import stripe
 
 payment_bp = Blueprint('payment', __name__)
